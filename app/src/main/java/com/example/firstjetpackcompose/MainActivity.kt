@@ -34,155 +34,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+import com.example.firstjetpackcompose.screen.HomeScreen
+import com.example.firstjetpackcompose.screen.ProfileScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            LoginUi()
+            MyApp()
         }
     }
 }
 
 @Composable
-fun LoginUi() {
-    val navController = rememberNavController() //create navController
+fun MyApp() {
+    val navController = rememberNavController()
 
-    MaterialTheme {
-        NavHost(
-            navController = navController,
-            startDestination = "login"
-        ) {
-            composable("login") { LoginScreen(navController) }
-            composable("home") { HomeScreen(navController) }
-        }
-    }
-}
-
-@Composable
-fun LoginScreen(navController: NavHostController) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var message by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    NavHost(
+        navController = navController,
+        startDestination = "home"
     ) {
-        Text(
-            text = "Login",
-            fontSize = 32.sp,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = {
-                    if (email.isNotEmpty() && password.isNotEmpty()) {
-                        navController.navigate("home")
-                    }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Login")
+        composable("home") {
+            HomeScreen(navController = navController
+            )
+        }
+        composable("profile") {
+            ProfileScreen(navController = navController)
         }
     }
 }
 
-@Composable
-fun HomeScreen(navController: NavHostController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Gambar Header
-        Image(
-            painter = painterResource(id = R.drawable.head_1),
-            contentDescription = "Header Image",
-            modifier = Modifier
-                .size(100.dp)
-                .padding(bottom = 16.dp)
-        )
-
-        // Selamat Datang
-        Text(
-            text = "Selamat Datang!",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-
-        // Keterangan
-        Text(
-            text = "Ini adalah halaman Home aplikasi Anda. Jelajahi fitur-fitur yang tersedia.",
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(bottom = 16.dp),
-            textAlign = TextAlign.Center
-        )
-
-        // Kartu Menu
-        Card(
-            elevation = 4.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Menu 1",
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Deskripsi singkat tentang menu 1",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
-
-        // Tombol Navigasi
-        Button(
-            onClick = { /* Tambahkan aksi navigasi */ },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Mulai Jelajahi")
-        }
-
-        // Tombol Navigasi
-        Button(
-            onClick = { navController.navigate("login") },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Keluar")
-        }
-    }
-}
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
